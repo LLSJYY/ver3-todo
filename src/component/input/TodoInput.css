@@ -1,0 +1,11 @@
+.input {
+  margin : 1rem;
+  border-color: grey ;
+  background-color: #ffffff;
+}
+
+.input.invaild {
+  border-color: red ;
+  background-color:salmon;
+
+}
