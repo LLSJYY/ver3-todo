@@ -35,7 +35,6 @@ function App() {
       <TodoInput onEnter={onEnter} />
       <TodoList />
       <TodoFilter/>
-      <Modal/>
       </TodoContext.Provider>
     </>
 
