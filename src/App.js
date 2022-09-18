@@ -4,10 +4,14 @@ import TodoFilter from './component/TodoFilter';
 import TodoInput from './component/TodoInput';
 import TodoContext from './component/TodoContext';
 import React, { useState  } from 'react';
-import Modal from './component/UI/Modal';
+import TodoCount from './component/TodoCount';
 function App() {
   const [store, setStore] = useState([]);
-
+  const [type,setType] = useState('All');
+  
+  const onClickFilter = (type) => {
+      setType(type);
+  };
   const onEnter = (text) => {
     setStore((prevData) => {
       return [...prevData,
@@ -19,7 +23,6 @@ function App() {
       ]
     })
   }
-
   const onRemove = (id) => {
     setStore((prevData)=> {
       return prevData.filter((el)=> {
@@ -28,13 +31,26 @@ function App() {
     })
   };
     
+  const onCheck = ({id,isChecked}) => {
+    setStore(((prevData)=>{
+        prevData.forEach((el)=>{
+          if(el.id === id ){
+            el.completed= isChecked;
+          }
+        })
+        return prevData;
+    })
+    )
+    console.log(store);
 
+  }
   return (
     <>    
-      <TodoContext.Provider value={{store,onRemove}}>
+      <TodoContext.Provider value={{store,onRemove,onCheck}}>
       <TodoInput onEnter={onEnter} />
       <TodoList />
-      <TodoFilter/>
+      <TodoCount/>
+      <TodoFilter type = {type} onClickFilter = {onClickFilter} />
       </TodoContext.Provider>
     </>
 
