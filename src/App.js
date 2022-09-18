@@ -10,7 +10,7 @@ function App() {
   const [type,setType] = useState('All');
   
   const onClickFilter = (type) => {
-      setType(type);
+      setType(type.type);
   };
   const onEnter = (text) => {
     setStore((prevData) => {
@@ -31,22 +31,20 @@ function App() {
     })
   };
     
-  const onCheck = ({id,isChecked}) => {
-    setStore(((prevData)=>{
+  const onCheck = (id,isChecked) => {
+    setStore((prevData)=>{
         prevData.forEach((el)=>{
           if(el.id === id ){
-            el.completed= isChecked;
+            el.completed = isChecked;
           }
         })
-        return prevData;
+        return [...prevData];
     })
-    )
-    console.log(store);
-
   }
+  console.log(store);
   return (
     <>    
-      <TodoContext.Provider value={{store,onRemove,onCheck}}>
+      <TodoContext.Provider value={{store,onRemove,onCheck,type}}>
       <TodoInput onEnter={onEnter} />
       <TodoList />
       <TodoCount/>

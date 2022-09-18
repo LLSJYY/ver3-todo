@@ -10,15 +10,25 @@ const TodoList = (props) => {
     <>
       <ul>
         <TodoContext.Consumer>
-          {({ store, onCheck }) =>
-            store.map((el, index) => {
-              return <li key={index}><input type="checkbox" onClick={(event) => {
-                onCheck({
-                  id: el.id,
-                  isChecked: event.target.checked
-                })
-              }} />{el.text}<button onClick={() => { setmodalInfo({ isModalOpen: true, dataId: el.id }) }}>X</button></li>;
+          {({ store, type ,onCheck}) =>{
+            switch(type){
+            case 'All' :
+              return store.map((el, index) => {
+                return <li key={index}><input type="checkbox" onClick={(event)=>{onCheck(el.id,event.target.checked)}} />{el.text}<button onClick={() => { setmodalInfo({ isModalOpen: true, dataId: el.id }) }}>X</button></li>;
+              })
+            case 'Active' : 
+            return store.filter((el)=>(el.completed===false)).map((el, index) => {
+              return <li key={index}><input type="checkbox" onClick={(event)=>{onCheck(el.id,event.target.checked)}} />{el.text}<button onClick={() => { setmodalInfo({ isModalOpen: true, dataId: el.id }) }}>X</button></li>;
             })
+            case 'Completed' : 
+            return store.filter((el)=>(el.completed===true)).map((el, index) => {
+              return <li key={index}><input type="checkbox" onClick={(event)=>{onCheck(el.id,event.target.checked)}} />{el.text}<button onClick={() => { setmodalInfo({ isModalOpen: true, dataId: el.id }) }}>X</button></li>;
+            })
+              
+            default:
+                break;
+          }
+          }
           }
         </TodoContext.Consumer>
       </ul>
@@ -36,6 +46,7 @@ const TodoList = (props) => {
 
           return <ReactModal
             isOpen={modalInfo.isModalOpen}
+            ariaHideApp={false}
           >
             <h1 id="heading">삭제하시겠습니까?</h1>
             <div id="full_description">
